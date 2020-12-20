@@ -12,7 +12,16 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+$router->get('/', [
+    'middleware' => 'auth',
+    'uses' => 'IndexController@index'
+]);
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+//$router->get('/', 'IndexController@index');
+
+$router->put('/videos/update-database', [
+    'middleware' => 'auth',
+    'uses' => 'IndexController@updateDatabase'
+]);
+
+$router->get('/videos/{id}', 'VideoController@findById');
