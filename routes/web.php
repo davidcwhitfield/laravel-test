@@ -19,9 +19,9 @@ $router->get('/', [
 
 //$router->get('/', 'IndexController@index');
 
-$router->put('/videos/update-database', [
+$router->get('videos/update-database', [
     'middleware' => 'auth',
-    'uses' => 'IndexController@updateDatabase'
+    'uses' => 'VideoController@updateDatabase'
 ]);
 
 $router->get('/videos/{id}', 'VideoController@findById');
