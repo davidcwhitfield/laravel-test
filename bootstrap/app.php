@@ -24,8 +24,7 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->withFacades();
-
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +59,8 @@ $app->singleton(
 */
 
 $app->configure('app');
-
+$app->configure('api');
+$app->configure('files');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -91,9 +91,12 @@ $app->configure('app');
 |
 */
 
- $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(App\Providers\YoutubeServiceProvider::class);
+
+$app->bind(App\Interfaces\VideoRepositoryInterface::class, App\Repositories\VideoRepository::class);
+$app->bind(App\Interfaces\ChannelRepositoryInterface::class, App\Repositories\ChannelRepository::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
