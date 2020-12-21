@@ -26,16 +26,22 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Here you may define how you wish users to be authenticated for your Lumen
-        // application. The callback which receives the incoming request instance
-        // should return either a User instance or null. You're free to obtain
-        // the User instance via an API token or any other method necessary.
 
+        // Todo: Move Token validation to database
         $this->app['auth']->viaRequest('api', function ($request) {
+            if (app()->environment('local')) {
+                return new GenericUser(['id' => 1, 'name' => 'API User']);
+            }
+
             if ($request->header('Authorization')) {
-                return env('APP_KEY') === $request->header('Authorization') ?
-                    new GenericUser(['id' => 1, 'name' => 'API User'])
-                    : null;
+                $authKey = $request->header('Authorization');
+                $environment = app()->environment();
+
+                if (!empty(config('api.app_keys')[$environment])
+                    && config('api.app_keys')[$environment] === $authKey
+                ) {
+                    return new GenericUser(['id' => 1, 'name' => 'API User']);
+                }
             }
             return null;
         });
