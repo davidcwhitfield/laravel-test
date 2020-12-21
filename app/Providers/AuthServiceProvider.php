@@ -26,7 +26,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
         // Todo: Move Token validation to database
         $this->app['auth']->viaRequest('api', function ($request) {
             if (app()->environment('local')) {
